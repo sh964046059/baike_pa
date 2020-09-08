@@ -25,11 +25,13 @@ class University_SX():
                      '长治学院', '山西财经大学', '太原学院', '山西警察学院',
                      '中北大学', '山西大同大学', '长治医学院', '运城学院',
                      '山西中医药大学', '山西工商学院', '太原工业学院']
+
+    #获取数据
     def get_data(self,university_name):
         self.data = requests.get(self.url.format(university_name), headers=headers[random.randint(0, len(headers) - 1)]).content.decode()
 
+    #处理数据
     def parse_data(self):
-
         s1 = etree.HTML(self.data)
 
         university_list = s1.xpath('//dd[@class="basicInfo-item value"]')
@@ -39,7 +41,8 @@ class University_SX():
         self.lis2 = []
         for i in range(0, len(university_trace)):
             university_trace[i] = university_trace[i].text.strip()
-
+            
+        #基本信息数据获取
         for i in lis1:
             if i in university_trace:
 
@@ -63,6 +66,7 @@ class University_SX():
 
         s = s1.xpath('//div[@class="lemma-summary"]/div')
 
+        #获取简介数据
         account = ""
         for i in range(0, len(s)):
             data = s[i].xpath('string(.)').strip()
